@@ -10,13 +10,13 @@ Clone the repo, enter the directory and run:
 
     $ cargo build
 
-Which should produce an executable binary called `massaa-rs` in the build
-output directory.
+This should produce an executable binary called `massaa-rs` in the build
+output directory. You may run it directly, or using `cargo run`.
 
 # Usage
 
 **NOTE**: The program stores data in an SQLite database. The database location
-must be specified via `DATABASE_URL` environment variable:
+must be specified via `DATABASE_URL` environment variable, for example:
 
     $ export DATABASE_URL=$HOME/massaa.db
 
