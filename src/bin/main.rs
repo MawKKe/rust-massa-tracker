@@ -46,14 +46,17 @@ fn main() {
         }
         */
 
-        diesel::insert_into(massaa).values((&kg.eq(kilos), &note_txt.eq("Omg!"))).execute(&conn).unwrap();
+        diesel::insert_into(massaa)
+            .values((&kg.eq(kilos), &note_txt.eq("Omg!")))
+            .execute(&conn)
+            .expect("Problem inserting row");
 
     }
     if let Some(_sub_matches) = matches.subcommand_matches("show") {
 
         let res = massaa
             .load::<self::models::Massa>(&conn)
-            .expect("FUCK");
+            .expect("Problem fetching rows");
 
         println!("Displaying {} results", res.len());
         for r in res {
