@@ -50,15 +50,6 @@ fn main() {
             note.collect::<Vec<&str>>().join(" ")
         });
 
-        /*
-         * We trust the argument value was given as required by the CLI parser,
-         * and unrwap() directly. Otherwise we should do something like this:
-        match kilos {
-            Err(e) => println!("Nothing of value was lost: {}.", e),
-            Ok(v) => println!("Value of massa: {:.2}", v + 10.0)
-        }
-        */
-
         diesel::insert_into(massaa)
             .values((&kg.eq(kilos), &note_txt.eq(s)))
             .execute(&conn)
