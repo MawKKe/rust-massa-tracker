@@ -30,6 +30,11 @@ fn main() {
                      .help("Päivän paino kilogrammoina")
                      .required(true)
                 )
+                .arg(clap::Arg::with_name("comment")
+                     .help("Comment for daily record")
+                     .required(false)
+                     .multiple(true))
+
         )
         .subcommand(clap::SubCommand::with_name("show")
         )
@@ -37,6 +42,14 @@ fn main() {
 
     if let Some(sub_matches) = matches.subcommand_matches("add") {
         let kilos = clap::value_t!(sub_matches.value_of("kilos"),f32).unwrap();
+
+        // "comment" may be passed via a single argument, or multiple arguments.
+        // In the latter case, the arguments are interpreted as individual words
+        // of the comment, and they must be joined to form a single string.
+        let s = sub_matches.values_of("comment").map(|note| {
+            note.collect::<Vec<&str>>().join(" ")
+        });
+
         /*
          * We trust the argument value was given as required by the CLI parser,
          * and unrwap() directly. Otherwise we should do something like this:
@@ -47,7 +60,7 @@ fn main() {
         */
 
         diesel::insert_into(massaa)
-            .values((&kg.eq(kilos), &note_txt.eq("Omg!")))
+            .values((&kg.eq(kilos), &note_txt.eq(s)))
             .execute(&conn)
             .expect("Problem inserting row");
 
